@@ -1,6 +1,17 @@
 const Joi = require('joi');
 const { validateRequest } = require('../helpers/common-function.helper');
 
+const getMoviesSchema = async (req, res, next) => {
+  // joi schema to validate the query parameters (optional)
+  const schema = Joi.object({
+    limit: Joi.number().integer().min(1), // limit should not be negative or zero
+    page: Joi.number().integer().min(1), // page should not be negative or zero
+    // genres can be a single string, or a group of strings (comma separated) (hyphens allowed in genres)
+    genres: Joi.string().pattern(/^[a-zA-Z]+(?:[-,][a-zA-Z]+)*$/),
+  });
+  validateRequest(req, res, next, schema, 'query');
+};
+
 const createMovieSchema = async (req, res, next) => {
   const schema = Joi.object({
     title: Joi.string().required(),
@@ -38,6 +49,7 @@ const updateMovieSchema = async (req, res, next) => {
 };
 
 module.exports = {
+  getMoviesSchema,
   createMovieSchema,
   updateMovieSchema,
 };

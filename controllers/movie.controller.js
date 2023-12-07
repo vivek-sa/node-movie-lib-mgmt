@@ -3,8 +3,11 @@ const movieService = require('../services/movie.service');
 
 const getMovies = async (req, res, next) => {
   try {
+    // get the limit, page, and genre (for filter) from request query parameters
+    const { limit, page, genres } = req.query;
+
     // get all the movies
-    const movies = await movieService.getMovies();
+    const movies = await movieService.getMovies({ limit, page, genres });
 
     // no movies found
     if (movies.length === 0) {
@@ -15,6 +18,7 @@ const getMovies = async (req, res, next) => {
 
     next();
   } catch (error) {
+    // call error handler if get any error
     commonErrorHandler(req, res, error.message, error.statusCode || 400, error);
   }
 };
@@ -32,6 +36,7 @@ const getMovie = async (req, res, next) => {
     next();
   } catch (error) {
     console.log('Error: ', error);
+    // call error handler if get any error
     commonErrorHandler(req, res, error.message, error.statusCode || 400, error);
   }
 };
@@ -77,11 +82,11 @@ const uploadMovie = async (req, res, next) => {
 
     // send saved movie details in response with status code 201 (created)
     res.data = { movie };
-
     res.statusCode = 201;
     next();
   } catch (error) {
     console.log('Error: ', error);
+    // call error handler if get any error
     commonErrorHandler(req, res, error.message, error.statusCode || 400, error);
   }
 };
@@ -101,6 +106,7 @@ const updateMovie = async (req, res, next) => {
     res.data = { movie };
     next();
   } catch (error) {
+    // call error handler if get any error
     commonErrorHandler(req, res, error.message, error.statusCode || 400, error);
   }
 };
@@ -117,6 +123,7 @@ const deleteMovie = async (req, res, next) => {
     res.data = message;
     next();
   } catch (error) {
+    // call error handler if get any error
     commonErrorHandler(req, res, error.message, error.statusCode || 400, error);
   }
 };

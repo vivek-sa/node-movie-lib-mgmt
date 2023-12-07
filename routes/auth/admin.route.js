@@ -40,7 +40,7 @@ router.post(
 router.post(
   '/refresh-token',
   verifyRefreshToken,
-  adminController.refreshToken,
+  adminController.refreshAccessToken,
   genericResponse.sendResponse,
 );
 

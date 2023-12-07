@@ -10,6 +10,7 @@ const {
   DeleteObjectCommand,
 } = require('@aws-sdk/client-s3');
 
+// getting the AWS variables from env file
 const {
   AWS_REGION,
   AWS_ACCESS_KEY_ID,
@@ -18,6 +19,7 @@ const {
   AWS_S3_BUCKET_KEY,
 } = process.env;
 
+// creating the s3 client
 const s3Client = new S3Client({
   region: AWS_REGION,
   credentials: {
@@ -84,10 +86,12 @@ const transcodeVideo = (inputPath, outputPath, size) => {
 const generateThumbnail = (inputPath, outputPath) => {
   return new Promise((resolve, reject) => {
     ffmpeg(inputPath)
+      // taking the screenshot of video
       .screenshots({
         count: 1,
         folder: '/tmp/',
         filename: path.basename(outputPath),
+        // resizing the image
         size: '320x240',
       })
       .on('end', resolve)
@@ -107,24 +111,28 @@ const processMovieAndGetS3Links = async (fileBuffer, fileName, movieTitle) => {
   const folderName = `${movieTitle}_${currentTimeStamp}`;
 
   // Upload the transcoded videos and thumbnail to S3 bucket
+  // 720p parameters
   const uploadParams720p = {
     Bucket: AWS_S3_BUCKET_NAME,
     Key: `${AWS_S3_BUCKET_KEY}/${folderName}/${path.basename(outputPath720p)}`,
     Body: fs.createReadStream(outputPath720p),
   };
 
+  // 1080p parameters
   const uploadParams1080p = {
     Bucket: AWS_S3_BUCKET_NAME,
     Key: `${AWS_S3_BUCKET_KEY}/${folderName}/${path.basename(outputPath1080p)}`,
     Body: fs.createReadStream(outputPath1080p),
   };
 
+  // thumbnail parameters
   const uploadParamsThumbnail = {
     Bucket: AWS_S3_BUCKET_NAME,
     Key: `${AWS_S3_BUCKET_KEY}/${folderName}/${path.basename(thumbnailPath)}`,
     Body: fs.createReadStream(thumbnailPath),
   };
 
+  // awaiting all promises
   await Promise.all([
     s3Client.send(new PutObjectCommand(uploadParams720p)),
     s3Client.send(new PutObjectCommand(uploadParams1080p)),

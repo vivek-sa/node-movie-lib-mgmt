@@ -4,7 +4,7 @@ const { validateRequest } = require('../helpers/common-function.helper');
 const loginAdminSchema = async (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
+    password: Joi.string().min(6).required(), // password must be 6 characters long
   });
   validateRequest(req, res, next, schema, 'body');
 };
@@ -15,7 +15,7 @@ const registerAdminSchema = async (req, res, next) => {
     lastName: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
-    role: Joi.string().valid('admin', 'visitor').required(),
+    role: Joi.string().valid('admin', 'visitor').required(), // role can be either admin or visitor
   });
   validateRequest(req, res, next, schema, 'body');
 };
