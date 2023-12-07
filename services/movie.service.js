@@ -2,12 +2,41 @@ const {
   processMovieAndGetS3Links,
   deleteMovieFromS3,
 } = require('../helpers/movie.helper');
-const Movie = require('../models/movie.model');
+const Movie = require('../models/Movie.model');
+const Genre = require('../models/Genre.model');
 
-const getMovies = async () => {
+// generate array from comma separated value (for filtering)
+const parseCSV = (value) =>
+  // if value is available, convert all to array along with trimming spaces and converting to lower case
+  value ? value.split(',').map((item) => item.trim().toLowerCase()) : null;
+
+const getMovies = async (payload) => {
   try {
-    // get all movies
-    const movies = await Movie.find();
+    // get the query parameters from payload
+    // limit - default value 100
+    // page - default value 1
+    let { limit = 100, page = 1, genres } = payload;
+
+    // parse genres comma separated values to array of genres
+    genres = parseCSV(genres);
+
+    // If genres are provided, find ObjectId for each genre
+    const genreIds = genres
+      ? await Genre.find({ name: { $in: genres } }, '_id')
+      : [];
+
+    // Extract ObjectId values from the result
+    const genreObjectIdArray = genreIds.map((genre) => genre._id);
+
+    // If genres are provided, include them in the query
+    const query = genres ? { genres: { $in: genreObjectIdArray } } : {};
+
+    // get all movies based on the query
+    const movies = await Movie.find(query)
+      // .populate('genres', 'name')
+      .skip((page - 1) * limit) // provide offset based on the limit and page
+      .limit(limit); // shows only the (limit) number of items
+
     return movies;
   } catch (error) {
     throw error;
@@ -16,13 +45,17 @@ const getMovies = async () => {
 
 const getMovie = async (payload) => {
   try {
+    // get the movie id from the payload
     const { movieId } = payload;
+    // get the movie with ID from database
     const movie = await Movie.findById(movieId);
+    // give 404 (not found) if movie having ID is not found
     if (!movie) {
       const error = new Error('Movie not found');
       error.statusCode = 404;
       throw error;
     }
+    // return the found movie
     return movie;
   } catch (error) {
     throw error;

@@ -1,8 +1,12 @@
 const getMovies = async (req, res, next) => {
+  // get the list of movies from response data
   let { movies } = res.data;
+  // if no movies found, go to next middleware
   if (!movies) return next();
+  // empty response object for storing all movies after serialization
   let response = [];
 
+  // loop through all movies and push each object to the response object
   for (const movie of movies) {
     response.push({
       id: movie.id,
@@ -22,13 +26,14 @@ const getMovies = async (req, res, next) => {
       s3LinkThumbnail: movie.s3LinkThumbnail,
     });
   }
-
+  // set the serialized data to the response object
   res.data.movies = response;
 
   next();
 };
 
 const getMovie = async (req, res, next) => {
+  // get the data from response data object
   const { movie } = res.data || null;
   const response = {
     id: movie.id,
@@ -47,11 +52,13 @@ const getMovie = async (req, res, next) => {
     s3Link1080p: movie.s3Link1080p,
     s3LinkThumbnail: movie.s3LinkThumbnail,
   };
+  // set the serialized data to the response object
   res.data.movie = response;
   next();
 };
 
 const uploadUpdateMovie = async (req, res, next) => {
+  // get the data from response data object
   const { movie } = res.data || null;
   const response = {
     id: movie.id,
@@ -70,6 +77,7 @@ const uploadUpdateMovie = async (req, res, next) => {
     s3Link1080p: movie.s3Link1080p,
     s3LinkThumbnail: movie.s3LinkThumbnail,
   };
+  // set the serialized data to the response object
   res.data.movie = response;
   next();
 };

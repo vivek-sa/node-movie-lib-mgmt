@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User.model');
 const { connectToMongoDb } = require('../dbConnection');
 
+// get the admin details from the env file
 const {
   ADMIN_FIRST_NAME: adminFirstName,
   ADMIN_LAST_NAME: adminLastName,
@@ -12,10 +13,13 @@ const {
 
 const addAdmin = async () => {
   try {
+    // connect to the database
     await connectToMongoDb();
 
+    // hash password using bcrypt
     const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
+    // store the hashed password in the payload along with role as admin
     const userData = {
       firstName: adminFirstName,
       lastName: adminLastName,

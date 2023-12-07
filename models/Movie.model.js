@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, Types } = mongoose;
+const Genre = require('../models/Genre.model');
 
 const movieSchema = new Schema({
   title: {
@@ -13,7 +14,7 @@ const movieSchema = new Schema({
   genres: [
     {
       type: Types.ObjectId,
-      ref: 'Genre',
+      ref: Genre,
       required: true,
     },
   ],

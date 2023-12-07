@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  node-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      - SERVER_PORT=8000
+      - AWS_ACCESS_KEY_ID=AKIAUYHZHSPZ3O6RE2XC
+      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_REGION=ap-south-1
+      - AWS_S3_BUCKET_NAME=myflix-node-bucket
+      - AWS_S3_BUCKET_KEY=movies
+      - DB_BASE_URL=mongodb://
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      - DB_USERNAME=mongo
+      - DB_PASSWORD=Abcd_1234
+      - DB_AUTH_SOURCE=admin
+      - DB_DATABASE=myflix_movies_db
+      - REDIS_URL=redis://redis:6379
+      - ACCESS_TOKEN_EXPIRY=7200
+      - REFRESH_TOKEN_EXPIRY=2592000
+      - ACCESS_TOKEN_COOKIE_EXPIRY_HRS=2
+      - REFRESH_TOKEN_COOKIE_EXPIRY_HRS=720
+      - ADMIN_FIRST_NAME=harsh
+      - ADMIN_LAST_NAME=sharma
+      - ADMIN_EMAIL=harsh@admin.com
+      - ADMIN_PASSWORD=harshadmin123
+      - FILE_UPLOAD_LIMIT_IN_MB=50
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=Abcd_1234
+      - MONGO_INITDB_DATABASE=myflix_movies_db
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db_mongo:/data/db
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - 6379:6379

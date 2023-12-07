@@ -15,6 +15,7 @@ router.get(
   '/',
   verifyAccessToken,
   checkRole(['admin']),
+  movieValidator.getMoviesSchema,
   movieController.getMovies,
   movieSerializer.getMovies,
   genericResponse.sendResponse,
