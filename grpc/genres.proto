@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// Definition of the Genre message, representing a movie genre entity.
+message Genre {
+  string id = 1;                    // Unique identifier for the genre.
+  string name = 2;                  // Name of the genre.
+  string description = 3;           // Description or additional information about the genre.
+}
+
+// Empty message, used as a placeholder or indicator of no data.
+message Empty {}
+
+// Message containing a list of genres.
+message GenreList {
+  repeated Genre genres = 1;  // List of Genre messages.
+}
+
+// Definition of the GenreService service.
+service GenreService {
+  rpc GetAllGenres (Empty) returns (GenreList);  // RPC to get a list of all genres.
+}

@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+// Definition of the Movie message, representing a movie entity.
+message Movie {
+  string id = 1;                    // Unique identifier for the movie. (ObjectId)
+  string title = 2;                 // Title of the movie.
+  string plot = 3;                  // Plot or summary of the movie.
+  repeated string genres = 4;       // List of genres associated with the movie. (Array of ObjectId)
+  int32 runtime = 5;                // Duration of the movie in minutes.
+  repeated string cast = 6;         // List of actors and actresses in the movie.
+  repeated string languages = 7;    // List of languages in which the movie is available.
+  string released = 8;              // Release date of the movie.
+  repeated string directors = 9;    // List of directors of the movie.
+  int32 year = 10;                  // Year of the movie's release.
+  double imdbRating = 11;           // IMDb rating of the movie.
+  string uploadedBy = 12;           // User who uploaded the movie. (ObjectId)
+  string s3Link720p = 13;           // S3 link for 720p resolution video.
+  string s3Link1080p = 14;          // S3 link for 1080p resolution video.
+  string s3LinkThumbnail = 15;      // S3 link for the movie's thumbnail image.
+}
+
+// Empty message, used as a placeholder or indicator of no data.
+message Empty {}
+
+// Message containing only the movie ID.
+message MovieId {
+  string id = 1;  // Unique identifier for a movie. (ObjectId)
+}
+
+// Message containing a list of movies.
+message MovieList {
+  repeated Movie movies = 1;  // List of Movie messages.
+}
+
+// Definition of the MovieService service.
+service MovieService {
+  rpc GetAllMovies (Empty) returns (MovieList);       // RPC to get a list of all movies.
+  rpc GetMovieById (MovieId) returns (Movie);         // RPC to get a specific movie by ID.
+}
