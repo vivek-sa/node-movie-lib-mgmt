@@ -6,6 +6,12 @@ const upload = multer();
 const routes = require('./routes');
 const { connectToMongoDb } = require('./dbConnection');
 const redisHelper = require('./helpers/redis.helper');
+const {
+  adminSetup,
+  userPreferenceConsumer,
+} = require('./helpers/kafka.helper');
+
+const { runGrpcServer } = require('./grpc/server');
 
 // getting the port from env file
 const serverPort = process.env.SERVER_PORT || 5000;
@@ -36,6 +42,12 @@ const startServer = async function () {
     // listening the server on specified port
     app.listen(serverPort);
     console.log(`--- Server started on ${serverPort} ---`);
+    await runGrpcServer();
+    console.log('--- gRPC server running ---');
+    await adminSetup();
+    console.log('--- Kafka admin setup done ---');
+    await userPreferenceConsumer();
+    console.log('--- user preference consumer running ---');
   } catch (err) {
     console.log('server setup failed', err);
     console.log('Error: ', err.message);

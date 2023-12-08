@@ -1,3 +1,7 @@
+const UserPreference = require('../models/UserPreference.model');
+const Genres = require('../models/Genre.model');
+const { suggestMovieProducer } = require('../helpers/kafka.helper');
+
 const {
   processMovieAndGetS3Links,
   deleteMovieFromS3,
@@ -114,6 +118,29 @@ const uploadMovie = async (payload) => {
 
     // save movie in the database
     const savedMovie = await movie.save();
+
+    // check for the user with the genres in the database (user preference)
+    // get all the user ids as an array of id
+
+    const genresData = await Genres.find(
+      {
+        _id: { $in: genres },
+      },
+      'name',
+    );
+
+    const genresName = genresData.map((genre) => genre.name);
+
+    const data = await UserPreference.find(
+      {
+        genre: { $in: genresName },
+      },
+      'userId',
+    );
+
+    const userIds = data.map((user) => user.userId);
+
+    await suggestMovieProducer(userIds, savedMovie._id);
 
     return savedMovie;
   } catch (error) {
