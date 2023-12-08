@@ -1,7 +1,6 @@
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 
-const { connectToMongoDb } = require('../dbConnection');
 const { getMovies, getMovie } = require('../services/movie.service');
 const { getGenres } = require('../services/genre.service');
 const { createProtoFile } = require('./protoFileGenerator');
@@ -48,9 +47,6 @@ const runGrpcServer = async () => {
 
   // creating a new grpc server
   const server = new grpc.Server();
-
-  // connecting to mongo db for service calls
-  await connectToMongoDb();
 
   // adding the movie service to the server
   server.addService(moviesProto.MovieService.service, {
