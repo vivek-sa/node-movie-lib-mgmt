@@ -50,32 +50,51 @@ const runGrpcServer = async () => {
 
   // adding the movie service to the server
   server.addService(moviesProto.MovieService.service, {
+    // get all movies service function
     getAllMovies: async (_, callback) => {
       try {
+        // get all movies from the server using movie service function call
         const movies = await getMovies({});
         const response = {
           movies: movies,
         };
+        // send the response containing all the movies
         callback(null, response);
       } catch (error) {
+        // if any error occurred, send it in the callback
         console.error('Error in getAllMovies:', error);
         callback({
-          code: grpc.status.INTERNAL,
+          code: grpc.status.INTERNAL, // code = 13 for internal server error
           details: 'Internal Server Error',
         });
       }
     },
+
+    // get movie by id service function
     getMovieById: async (call, callback) => {
+      // the id is in call.request object (coming from the function call from client)
       try {
+        // get the movie by id
         const movie = await getMovie({
           movieId: call.request.id,
         });
-        const response = movie;
-        callback(null, response);
+
+        // if no error, send the movie to the client
+        callback(null, movie);
       } catch (error) {
         console.error('Error in getMovieById:', error);
+
+        // if the error code while getting the movie is 404, movie does not exists
+        if (error.statusCode === 404) {
+          callback({
+            code: grpc.status.NOT_FOUND, // code = 5 for not found
+            details: 'Movie Not Found',
+          });
+        }
+
+        // else send internal server error
         callback({
-          code: grpc.status.INTERNAL,
+          code: grpc.status.INTERNAL, // code = 13 for internal server error
           details: 'Internal Server Error',
         });
       }
@@ -84,12 +103,25 @@ const runGrpcServer = async () => {
 
   // adding the genre service to the server
   server.addService(genresProto.GenreService.service, {
+    // get all genres service function
     getAllGenres: async (_, callback) => {
-      const genres = await getGenres({});
-      const response = {
-        genres: genres,
-      };
-      callback(null, response);
+      try {
+        // get all the genres
+        const genres = await getGenres({});
+
+        // send genres in the response
+        const response = {
+          genres: genres,
+        };
+        callback(null, response);
+      } catch (error) {
+        // if any error occurs, send it in the response
+        console.error('Error in getAllGenres:', error);
+        callback({
+          code: grpc.status.INTERNAL, // code = 13 for internal server error
+          details: 'Internal Server Error',
+        });
+      }
     },
   });
 
@@ -98,14 +130,13 @@ const runGrpcServer = async () => {
     `0.0.0.0:${grpcPort}`,
     grpc.ServerCredentials.createInsecure(),
     (error, port) => {
+      // if any error occurs while starting the gRPC server, throw it
+      if (error) throw error;
       console.log(`gRpc server running at http://0.0.0.0:${port}`);
       server.start();
     },
   );
 };
-
-// // running the gRPC server
-// runGrpcServer();
 
 module.exports = {
   runGrpcServer,

@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
-const upload = multer();
 const routes = require('./routes');
 const { connectToMongoDb } = require('./dbConnection');
 const redisHelper = require('./helpers/redis.helper');
