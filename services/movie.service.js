@@ -1,13 +1,14 @@
-const UserPreference = require('../models/UserPreference.model');
-const Genres = require('../models/Genre.model');
+const Movie = require('../models/Movie.model');
+const Genre = require('../models/Genre.model');
+
 const { suggestMovieProducer } = require('../helpers/kafka.helper');
 
 const {
   processMovieAndGetS3Links,
   deleteMovieFromS3,
 } = require('../helpers/movie.helper');
-const Movie = require('../models/Movie.model');
-const Genre = require('../models/Genre.model');
+const { getGenreNamesFromIds } = require('./genre.service');
+const { getUserIdsForPreferredGenres } = require('./userPreference.service');
 
 // generate array from comma separated value (for filtering)
 const parseCSV = (value) =>
@@ -119,29 +120,16 @@ const uploadMovie = async (payload) => {
     // save movie in the database
     const savedMovie = await movie.save();
 
-    // check for the user with the genres in the database (user preference)
-    // get all the user ids as an array of id
+    // get genre names from genre ids of the movie
+    const genreNames = await getGenreNamesFromIds({ genres });
 
-    const genresData = await Genres.find(
-      {
-        _id: { $in: genres },
-      },
-      'name',
-    );
+    // get user ids of the users having genre of the movie as their genre preference
+    const userIds = await getUserIdsForPreferredGenres({ genreNames });
 
-    const genresName = genresData.map((genre) => genre.name);
-
-    const data = await UserPreference.find(
-      {
-        genre: { $in: genresName },
-      },
-      'userId',
-    );
-
-    const userIds = data.map((user) => user.userId);
-
+    // send user ids and movie id to the kafka suggest movie consumer
     await suggestMovieProducer(userIds, savedMovie._id);
 
+    // return the saved movie to the controller
     return savedMovie;
   } catch (error) {
     throw error;
