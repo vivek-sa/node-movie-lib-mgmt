@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const multer = require('multer');
 const routes = require('./routes');
 const { connectToMongoDb } = require('./dbConnection');
 const redisHelper = require('./helpers/redis.helper');
@@ -38,15 +37,16 @@ const startServer = async function () {
     // connecting to the redis client
     await redisHelper.connectClient();
     console.log('--- Redis connected ---');
+    // connecting to the grpc server
+    await runGrpcServer();
+    console.log('--- gRPC server running ---');
+    // connecting to the kafka client
+    await adminSetup(); // setting up the infrastructure by admin
+    await userPreferenceConsumer(); // running the kafka consumer
+    console.log('--- Kafka running ---');
     // listening the server on specified port
     app.listen(serverPort);
     console.log(`--- Server started on ${serverPort} ---`);
-    await runGrpcServer();
-    console.log('--- gRPC server running ---');
-    await adminSetup();
-    console.log('--- Kafka admin setup done ---');
-    await userPreferenceConsumer();
-    console.log('--- user preference consumer running ---');
   } catch (err) {
     console.log('server setup failed', err);
     console.log('Error: ', err.message);

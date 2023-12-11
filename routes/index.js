@@ -31,9 +31,6 @@ function registerRoutes(app, routePath = '', dir = __dirname) {
         // construct the full endpoint path based on the routePath and routeName.
         const routeEndpoint = path.join(routePath, routeName);
 
-        // log the registration information to the console.
-        console.log(`Registering route for => /api/${routeEndpoint}`);
-
         // register the route with the Express app using the constructed endpoint.
         app.use(`/api/${routeEndpoint}`, route);
       }
