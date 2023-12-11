@@ -19,8 +19,11 @@ message Movie {
   string s3LinkThumbnail = 15;      // S3 link for the movie's thumbnail image.
 }
 
-// Empty message, used as a placeholder or indicator of no data.
-message Empty {}
+// Message containing page and limit of the data
+message Pagination {
+  int32 page = 1;
+  int32 limit = 2;
+}
 
 // Message containing only the movie ID.
 message MovieId {
@@ -34,6 +37,6 @@ message MovieList {
 
 // Definition of the MovieService service.
 service MovieService {
-  rpc GetAllMovies (Empty) returns (MovieList);       // RPC to get a list of all movies.
+  rpc GetAllMovies (Pagination) returns (MovieList);       // RPC to get a list of all movies with pagination.
   rpc GetMovieById (MovieId) returns (Movie);         // RPC to get a specific movie by ID.
 }

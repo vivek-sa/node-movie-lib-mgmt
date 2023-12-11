@@ -7,8 +7,11 @@ message Genre {
   string description = 3;           // Description or additional information about the genre.
 }
 
-// Empty message, used as a placeholder or indicator of no data.
-message Empty {}
+// Message containing page and limit of the data
+message Pagination {
+  int32 page = 1;
+  int32 limit = 2;
+}
 
 // Message containing a list of genres.
 message GenreList {
@@ -17,5 +20,5 @@ message GenreList {
 
 // Definition of the GenreService service.
 service GenreService {
-  rpc GetAllGenres (Empty) returns (GenreList);  // RPC to get a list of all genres.
+  rpc GetAllGenres (Pagination) returns (GenreList);  // RPC to get a list of all genres with pagination.
 }

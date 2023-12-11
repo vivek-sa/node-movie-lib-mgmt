@@ -52,10 +52,10 @@ const runGrpcServer = async () => {
     // adding the movie service to the server
     server.addService(movieProto.MovieService.service, {
       // get all movies service function
-      getAllMovies: async (_, callback) => {
+      getAllMovies: async (call, callback) => {
         try {
           // get all movies from the server using movie service function call
-          const movies = await getMovies({});
+          const movies = await getMovies({ ...call.request });
           const response = {
             movies: movies,
           };
@@ -105,10 +105,10 @@ const runGrpcServer = async () => {
     // adding the genre service to the server
     server.addService(genreProto.GenreService.service, {
       // get all genres service function
-      getAllGenres: async (_, callback) => {
+      getAllGenres: async (call, callback) => {
         try {
           // get all the genres
-          const genres = await getGenres({});
+          const genres = await getGenres({ ...call.request });
 
           // send genres in the response
           const response = {
