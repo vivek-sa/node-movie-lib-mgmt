@@ -70,7 +70,7 @@ const getMovie = async (payload) => {
 const uploadMovie = async (payload) => {
   try {
     // destructure variables from payload object
-    const {
+    let {
       userId,
       title,
       plot,
@@ -85,6 +85,10 @@ const uploadMovie = async (payload) => {
       fileBuffer,
       fileName,
     } = payload;
+
+    // replace spaces with underscore for movie title and file name
+    title = title.replaceAll(' ', '_');
+    fileName = fileName.replaceAll(' ', '_');
 
     // check if the title already exists
     const existingMovie = await Movie.findOne({ title: title });
@@ -126,8 +130,9 @@ const uploadMovie = async (payload) => {
     // get user ids of the users having genre of the movie as their genre preference
     const userIds = await getUserIdsForPreferredGenres({ genreNames });
 
+    // if user preference exists for the genre,
     // send user ids and movie id to the kafka suggest movie consumer
-    await suggestMovieProducer(userIds, savedMovie._id);
+    if (userIds.length > 0) await suggestMovieProducer(userIds, savedMovie._id);
 
     // return the saved movie to the controller
     return savedMovie;
