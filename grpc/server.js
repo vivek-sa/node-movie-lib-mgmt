@@ -6,13 +6,13 @@ const { getGenres } = require('../services/genre.service');
 const { createProtoFile } = require('./protoFileGenerator');
 
 // proto files path
-const MOVIES_PROTO_PATH = __dirname + '/movies.proto';
-const GENRES_PROTO_PATH = __dirname + '/genres.proto';
+const MOVIE_PROTO_PATH = __dirname + '/movie.proto';
+const GENRE_PROTO_PATH = __dirname + '/genre.proto';
 
 // github movies proto file url
-const moviesProtoUrl = process.env.MOVIES_PROTO_URL;
+const movieProtoUrl = process.env.MOVIE_PROTO_URL;
 // github genres proto file url
-const genresProtoUrl = process.env.GENRES_PROTO_URL;
+const genreProtoUrl = process.env.GENRE_PROTO_URL;
 
 const { GRPC_PORT: grpcPort, GRPC_HOST: grpcHost } = process.env;
 
@@ -29,28 +29,28 @@ const options = {
 const runGrpcServer = async () => {
   try {
     // creating the proto files for movies and genres
-    await createProtoFile(moviesProtoUrl, 'movies');
-    await createProtoFile(genresProtoUrl, 'genres');
+    await createProtoFile(movieProtoUrl, 'movie');
+    await createProtoFile(genreProtoUrl, 'genre');
 
     // creating the proto package definition from the proto files
     const movieProtoPackageDefinition = protoLoader.loadSync(
-      MOVIES_PROTO_PATH,
+      MOVIE_PROTO_PATH,
       options,
     );
     const genreProtoPackageDefinition = protoLoader.loadSync(
-      GENRES_PROTO_PATH,
+      GENRE_PROTO_PATH,
       options,
     );
 
     // loading the proto buff
-    const moviesProto = grpc.loadPackageDefinition(movieProtoPackageDefinition);
-    const genresProto = grpc.loadPackageDefinition(genreProtoPackageDefinition);
+    const movieProto = grpc.loadPackageDefinition(movieProtoPackageDefinition);
+    const genreProto = grpc.loadPackageDefinition(genreProtoPackageDefinition);
 
     // creating a new grpc server
     const server = new grpc.Server();
 
     // adding the movie service to the server
-    server.addService(moviesProto.MovieService.service, {
+    server.addService(movieProto.MovieService.service, {
       // get all movies service function
       getAllMovies: async (_, callback) => {
         try {
@@ -103,7 +103,7 @@ const runGrpcServer = async () => {
     });
 
     // adding the genre service to the server
-    server.addService(genresProto.GenreService.service, {
+    server.addService(genreProto.GenreService.service, {
       // get all genres service function
       getAllGenres: async (_, callback) => {
         try {
