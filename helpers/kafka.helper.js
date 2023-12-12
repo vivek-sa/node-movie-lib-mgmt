@@ -1,7 +1,7 @@
 // Importing required modules
 const { Kafka, logLevel } = require('kafkajs');
 
-const UserPreference = require('../models/UserPreference.model');
+const { addUserPreference } = require('../services/userPreference.service');
 
 // getting the variables for kafka from env file
 const {
@@ -76,14 +76,8 @@ const userPreferenceConsumer = async () => {
       const userId = data.userId;
       const genre = data.genre;
 
-      // creating the user preference for given userId
-      const userPreference = new UserPreference({
-        userId: userId,
-        genre: genre,
-      });
-
-      // storing the user preference in the mongo db collection
-      await userPreference.save();
+      // save the user preference to the database
+      await addUserPreference({ userId, genre });
 
       console.log('User preference saved');
     },
@@ -109,6 +103,7 @@ const suggestMovieProducer = async (userIds, movieId) => {
       {
         partition: 0,
         key: 'movie-suggestion',
+        // send the list of user ids along with the movie id to the consumer
         value: JSON.stringify({
           userIds: userIds,
           movieId: movieId,
