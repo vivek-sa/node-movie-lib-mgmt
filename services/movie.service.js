@@ -1,7 +1,9 @@
 const Movie = require('../models/Movie.model');
 const Genre = require('../models/Genre.model');
 
-const { suggestMovieProducer } = require('../helpers/kafka/producer.helper');
+const {
+  suggestMovieProducer,
+} = require('../helpers/kafka/producer.kafka.helper');
 
 const {
   processMovieAndGetS3Links,
@@ -132,7 +134,12 @@ const uploadMovie = async (payload) => {
 
     // if user preference exists for the genre,
     // send user ids and movie id to the kafka suggest movie consumer
-    if (userIds.length > 0) await suggestMovieProducer(userIds, savedMovie._id);
+    if (userIds.length > 0)
+      // looping through all user ids and producing message for each user id
+      for (const userId of userIds) {
+        // suggest movie to the user
+        await suggestMovieProducer(userId, savedMovie._id);
+      }
 
     // return the saved movie to the controller
     return savedMovie;

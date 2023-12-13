@@ -7,7 +7,7 @@ const {
 } = process.env;
 
 // get the kafka client
-const { kafka } = require('./client.helper');
+const { kafka } = require('./client.kafka.helper');
 
 // Function for consuming user preferences from Kafka
 const userPreferenceConsumer = async () => {
