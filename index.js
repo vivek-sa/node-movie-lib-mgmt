@@ -4,10 +4,12 @@ const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 const { connectToMongoDb } = require('./dbConnection');
 const redisHelper = require('./helpers/redis.helper');
+
+const { adminSetup } = require('./helpers/kafka/client.kafka.helper');
 const {
-  adminSetup,
   userPreferenceConsumer,
-} = require('./helpers/kafka.helper');
+} = require('./helpers/kafka/consumer.kafka.helper');
+const { connectProducer } = require('./helpers/kafka/producer.kafka.helper');
 
 const { runGrpcServer } = require('./grpc/server');
 
@@ -42,6 +44,7 @@ const startServer = async function () {
     console.log('--- gRPC server running ---');
     // connecting to the kafka client
     await adminSetup(); // setting up the infrastructure by admin
+    await connectProducer(); // connecting to the kafka producer
     await userPreferenceConsumer(); // running the kafka consumer
     console.log('--- Kafka running ---');
     // listening the server on specified port

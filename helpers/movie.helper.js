@@ -101,6 +101,10 @@ const generateThumbnail = (inputPath, outputPath) => {
 
 // Process the movie file (file buffer), upload it to s3 and return the links
 const processMovieAndGetS3Links = async (fileBuffer, fileName, movieTitle) => {
+  // replace spaces with underscore for movie title and file name for link with no space
+  movieTitle = movieTitle.replaceAll(' ', '_');
+  fileName = fileName.replaceAll(' ', '_');
+
   // Process the movie (transcode and generate thumbnail)
   const { outputPath720p, outputPath1080p, thumbnailPath } = await processVideo(
     fileBuffer,

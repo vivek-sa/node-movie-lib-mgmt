@@ -1,13 +1,15 @@
 const Movie = require('../models/Movie.model');
 const Genre = require('../models/Genre.model');
 
-const { suggestMovieProducer } = require('../helpers/kafka.helper');
+const {
+  suggestMovieProducer,
+} = require('../helpers/kafka/producer.kafka.helper');
 
 const {
   processMovieAndGetS3Links,
   deleteMovieFromS3,
 } = require('../helpers/movie.helper');
-const { getGenreNamesFromIds } = require('./genre.service');
+// const { getGenreNamesFromIds } = require('./genre.service');
 const { getUserIdsForPreferredGenres } = require('./userPreference.service');
 
 // generate array from comma separated value (for filtering)
@@ -86,10 +88,6 @@ const uploadMovie = async (payload) => {
       fileName,
     } = payload;
 
-    // replace spaces with underscore for movie title and file name
-    title = title.replaceAll(' ', '_');
-    fileName = fileName.replaceAll(' ', '_');
-
     // check if the title already exists
     const existingMovie = await Movie.findOne({ title: title });
 
@@ -124,15 +122,20 @@ const uploadMovie = async (payload) => {
     // save movie in the database
     const savedMovie = await movie.save();
 
-    // get genre names from genre ids of the movie
-    const genreNames = await getGenreNamesFromIds({ genres });
+    // // get genre names from genre ids of the movie
+    // const genreNames = await getGenreNamesFromIds({ genres });
 
     // get user ids of the users having genre of the movie as their genre preference
-    const userIds = await getUserIdsForPreferredGenres({ genreNames });
+    const userIds = await getUserIdsForPreferredGenres({ genres });
 
     // if user preference exists for the genre,
     // send user ids and movie id to the kafka suggest movie consumer
-    if (userIds.length > 0) await suggestMovieProducer(userIds, savedMovie._id);
+    if (userIds.length > 0)
+      // looping through all user ids and producing message for each user id
+      for (const userId of userIds) {
+        // suggest movie to the user
+        await suggestMovieProducer(userId, savedMovie._id);
+      }
 
     // return the saved movie to the controller
     return savedMovie;
