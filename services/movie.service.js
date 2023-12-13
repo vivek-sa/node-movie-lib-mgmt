@@ -1,7 +1,7 @@
 const Movie = require('../models/Movie.model');
 const Genre = require('../models/Genre.model');
 
-const { suggestMovieProducer } = require('../helpers/kafka.helper');
+const { suggestMovieProducer } = require('../helpers/kafka/producer.helper');
 
 const {
   processMovieAndGetS3Links,

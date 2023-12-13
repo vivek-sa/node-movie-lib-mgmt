@@ -4,11 +4,16 @@ const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 const { connectToMongoDb } = require('./dbConnection');
 const redisHelper = require('./helpers/redis.helper');
-const {
-  adminSetup,
-  userPreferenceConsumer,
-  connectProducer,
-} = require('./helpers/kafka.helper');
+
+// const {
+//   adminSetup,
+//   userPreferenceConsumer,
+//   connectProducer,
+// } = require('./helpers/kafka/kafka.helper');
+
+const { adminSetup } = require('./helpers/kafka/client.helper');
+const { userPreferenceConsumer } = require('./helpers/kafka/consumer.helper');
+const { connectProducer } = require('./helpers/kafka/producer.helper');
 
 const { runGrpcServer } = require('./grpc/server');
 
