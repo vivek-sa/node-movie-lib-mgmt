@@ -7,6 +7,7 @@ const redisHelper = require('./helpers/redis.helper');
 const {
   adminSetup,
   userPreferenceConsumer,
+  connectProducer,
 } = require('./helpers/kafka.helper');
 
 const { runGrpcServer } = require('./grpc/server');
@@ -42,6 +43,7 @@ const startServer = async function () {
     console.log('--- gRPC server running ---');
     // connecting to the kafka client
     await adminSetup(); // setting up the infrastructure by admin
+    await connectProducer(); // connecting to the kafka producer
     await userPreferenceConsumer(); // running the kafka consumer
     console.log('--- Kafka running ---');
     // listening the server on specified port

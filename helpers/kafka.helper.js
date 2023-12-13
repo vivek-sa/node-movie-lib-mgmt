@@ -20,6 +20,9 @@ const kafka = new Kafka({
   logLevel: logLevel.NOTHING, // set logging to nothing
 });
 
+// creating the global producer
+const producer = kafka.producer();
+
 // Function to set up Kafka admin
 const adminSetup = async () => {
   // creating the kafka admin
@@ -50,6 +53,11 @@ const adminSetup = async () => {
 
   // disconnect admin
   await admin.disconnect();
+};
+
+// Function for connecting to the producer
+const connectProducer = async () => {
+  await producer.connect();
 };
 
 // Function for consuming user preferences from Kafka
@@ -86,16 +94,6 @@ const userPreferenceConsumer = async () => {
 
 // Function for producing movie suggestions to Kafka
 const suggestMovieProducer = async (userIds, movieId) => {
-  // creating the kafka producer
-  const producer = kafka.producer();
-
-  console.log('Connecting producer...');
-
-  // connecting the kafka producer
-  await producer.connect();
-
-  console.log('Producer connected successfully...');
-
   // sending movie suggestion message to the 'suggest-movie' topic
   await producer.send({
     topic: kafkaTopicSuggestMovie,
@@ -111,15 +109,12 @@ const suggestMovieProducer = async (userIds, movieId) => {
       },
     ],
   });
-
-  // disconnecting the kafka producer
-  await producer.disconnect();
-  console.log('Producer disconnected');
 };
 
 // Exporting functions for external use
 module.exports = {
   adminSetup,
+  connectProducer,
   userPreferenceConsumer,
   suggestMovieProducer,
 };
