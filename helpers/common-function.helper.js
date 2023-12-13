@@ -1,5 +1,6 @@
 const { commonErrorHandler } = require('./error-handler.helper');
 
+// function to validate request data schema
 const validateRequest = (req, res, next, schema, requestParameterType) => {
   // Initialize an empty object to store request data
   let requestData = {};

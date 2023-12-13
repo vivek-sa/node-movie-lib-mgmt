@@ -1,6 +1,7 @@
 const { commonErrorHandler } = require('../helpers/error-handler.helper');
 const redisHelper = require('../helpers/redis.helper');
 
+// middleware function to verify whether an access token is valid or not
 const verifyAccessToken = async (req, res, next) => {
   // if  cookies are not present, send error
   if (!req.cookies) {
@@ -29,6 +30,7 @@ const verifyAccessToken = async (req, res, next) => {
   next();
 };
 
+// middleware function to verify whether a refresh token is valid or not
 const verifyRefreshToken = async (req, res, next) => {
   // if  cookies are not present, send error
   if (!req.cookies) {

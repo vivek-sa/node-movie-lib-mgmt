@@ -13,6 +13,7 @@ const { ACCESS_TOKEN_COOKIE_EXPIRY_HRS, REFRESH_TOKEN_COOKIE_EXPIRY_HRS } =
 const accessTokenExpiryHrs = parseInt(ACCESS_TOKEN_COOKIE_EXPIRY_HRS);
 const refreshTokenExpiryHrs = parseInt(REFRESH_TOKEN_COOKIE_EXPIRY_HRS);
 
+// login admin controller
 const loginAdmin = async (req, res, next) => {
   try {
     // get email and password from the request body
@@ -46,6 +47,7 @@ const loginAdmin = async (req, res, next) => {
   }
 };
 
+// logout admin controller
 const logoutAdmin = async (req, res, next) => {
   try {
     // get the accessToken and refreshToken from the cookies
@@ -68,6 +70,7 @@ const logoutAdmin = async (req, res, next) => {
   }
 };
 
+// register admin controller
 const registerAdmin = async (req, res, next) => {
   try {
     // get the fields of user from request body
@@ -91,6 +94,7 @@ const registerAdmin = async (req, res, next) => {
   }
 };
 
+// refresh access token controller
 const refreshAccessToken = async (req, res, next) => {
   try {
     // delete current access token and refresh token from the cache

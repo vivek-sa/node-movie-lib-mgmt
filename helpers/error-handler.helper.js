@@ -1,3 +1,4 @@
+// common error handler function for handling all errors
 const commonErrorHandler = async (
   req,
   res,

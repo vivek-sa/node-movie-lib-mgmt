@@ -1,6 +1,7 @@
 const { commonErrorHandler } = require('../helpers/error-handler.helper');
 const User = require('../models/User.model');
 
+// middleware function to check for role based authorization
 const checkRole = (roles) => async (req, res, next) => {
   // get the id from the req object
   const { id } = req.user;

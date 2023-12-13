@@ -1,3 +1,4 @@
+// get movies serializer function
 const getMovies = async (req, res, next) => {
   // get the list of movies from response data
   let { movies } = res.data;
@@ -32,6 +33,7 @@ const getMovies = async (req, res, next) => {
   next();
 };
 
+// get movie serializer function
 const getMovie = async (req, res, next) => {
   // get the data from response data object
   const { movie } = res.data || null;
@@ -57,6 +59,7 @@ const getMovie = async (req, res, next) => {
   next();
 };
 
+// serializer function for upload movie and update movie
 const uploadUpdateMovie = async (req, res, next) => {
   // get the data from response data object
   const { movie } = res.data || null;

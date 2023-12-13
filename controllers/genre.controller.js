@@ -1,6 +1,7 @@
 const { commonErrorHandler } = require('../helpers/error-handler.helper');
 const genreService = require('../services/genre.service');
 
+// get all genres controller
 const getGenres = async (req, res, next) => {
   try {
     // get the limit, page, and genre (for filter) from request query parameters

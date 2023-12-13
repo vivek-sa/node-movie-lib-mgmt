@@ -17,6 +17,7 @@ const parseCSV = (value) =>
   // if value is available, convert all to array along with trimming spaces and converting to lower case
   value ? value.split(',').map((item) => item.trim().toLowerCase()) : null;
 
+// get all movies service function
 const getMovies = async (payload) => {
   try {
     // get the query parameters from payload
@@ -50,6 +51,7 @@ const getMovies = async (payload) => {
   }
 };
 
+// get movie by id service function
 const getMovie = async (payload) => {
   try {
     // get the movie id from the payload
@@ -69,6 +71,7 @@ const getMovie = async (payload) => {
   }
 };
 
+// upload a movie service function
 const uploadMovie = async (payload) => {
   try {
     // destructure variables from payload object
@@ -144,6 +147,7 @@ const uploadMovie = async (payload) => {
   }
 };
 
+// update movie by id service function
 const updateMovie = async (payload) => {
   try {
     // get the movie id and fields for updating movie

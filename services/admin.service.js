@@ -7,6 +7,7 @@ const {
   signRefreshToken,
 } = require('../helpers/authentication.helper');
 
+// login admin service function
 const loginAdmin = async (payload) => {
   try {
     // get the email and password from the payload
@@ -46,6 +47,7 @@ const loginAdmin = async (payload) => {
   }
 };
 
+// logout admin service function
 const logoutAdmin = async (payload) => {
   try {
     // get the access token and refresh token from the payload
@@ -62,6 +64,7 @@ const logoutAdmin = async (payload) => {
   }
 };
 
+// register admin service function
 const registerAdmin = async (payload) => {
   try {
     // get the user details from the payload
@@ -99,6 +102,7 @@ const registerAdmin = async (payload) => {
   }
 };
 
+// refresh access token service function
 const refreshAccessToken = async (payload) => {
   try {
     // get the access token and refresh token from the payload

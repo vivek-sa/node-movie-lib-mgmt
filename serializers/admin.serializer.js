@@ -1,3 +1,4 @@
+// register admin serializer function
 const registerAdmin = async (req, res, next) => {
   // get the data from response data object
   const data = res.data.user || null;

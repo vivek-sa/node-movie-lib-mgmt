@@ -1,6 +1,7 @@
 const { commonErrorHandler } = require('../helpers/error-handler.helper');
 const movieService = require('../services/movie.service');
 
+// get all movies controller
 const getMovies = async (req, res, next) => {
   try {
     // get the limit, page, and genre (for filter) from request query parameters
@@ -23,6 +24,7 @@ const getMovies = async (req, res, next) => {
   }
 };
 
+// get movie by id controller
 const getMovie = async (req, res, next) => {
   try {
     // get the movie id from request parameter
@@ -41,6 +43,7 @@ const getMovie = async (req, res, next) => {
   }
 };
 
+// upload a movie controller
 const uploadMovie = async (req, res, next) => {
   try {
     // user id of logged in user
@@ -91,6 +94,7 @@ const uploadMovie = async (req, res, next) => {
   }
 };
 
+// update a movie by id controller
 const updateMovie = async (req, res, next) => {
   try {
     // movie id from request parameter
@@ -111,6 +115,7 @@ const updateMovie = async (req, res, next) => {
   }
 };
 
+// delete movie by id controller
 const deleteMovie = async (req, res, next) => {
   try {
     // movie id from request parameter

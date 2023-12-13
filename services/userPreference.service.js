@@ -1,5 +1,6 @@
 const UserPreference = require('../models/UserPreference.model');
 
+// add user preference service function
 const addUserPreference = async (payload) => {
   try {
     const { userId, genreId } = payload;
@@ -17,6 +18,7 @@ const addUserPreference = async (payload) => {
   }
 };
 
+// function that returns the user ids that have the preferred genres as genres in payload
 const getUserIdsForPreferredGenres = async (payload) => {
   try {
     // get the array of genre names from the payload

@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const { validateRequest } = require('../helpers/common-function.helper');
 
+// get all movies validator
 const getMoviesSchema = async (req, res, next) => {
   // joi schema to validate the query parameters (optional)
   const schema = Joi.object({
@@ -12,6 +13,7 @@ const getMoviesSchema = async (req, res, next) => {
   validateRequest(req, res, next, schema, 'query');
 };
 
+// create movie validator
 const createMovieSchema = async (req, res, next) => {
   const schema = Joi.object({
     title: Joi.string().required(),
@@ -32,6 +34,7 @@ const createMovieSchema = async (req, res, next) => {
   validateRequest(req, res, next, schema, 'body');
 };
 
+// update movie validator
 const updateMovieSchema = async (req, res, next) => {
   const schema = Joi.object({
     title: Joi.string(),

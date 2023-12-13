@@ -7,6 +7,7 @@ const storage = multer.memoryStorage();
 const { FILE_UPLOAD_LIMIT_IN_MB } = process.env;
 const fileUploadLimit = parseInt(FILE_UPLOAD_LIMIT_IN_MB);
 
+// multer middleware for performing file validation and parsing multipart form data
 const upload = (req, res, next) => {
   // multer upload object for middleware
   const multerUpload = multer({

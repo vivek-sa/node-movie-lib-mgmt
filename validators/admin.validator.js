@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const { validateRequest } = require('../helpers/common-function.helper');
 
+// login admin validator
 const loginAdminSchema = async (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
@@ -9,6 +10,7 @@ const loginAdminSchema = async (req, res, next) => {
   validateRequest(req, res, next, schema, 'body');
 };
 
+// register admin validator
 const registerAdminSchema = async (req, res, next) => {
   const schema = Joi.object({
     firstName: Joi.string().required(),

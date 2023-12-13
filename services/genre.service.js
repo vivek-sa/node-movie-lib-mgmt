@@ -1,5 +1,6 @@
 const Genre = require('../models/Genre.model');
 
+// get all genres service function
 const getGenres = async (payload) => {
   try {
     // get the query parameters from payload
@@ -17,28 +18,6 @@ const getGenres = async (payload) => {
     throw error;
   }
 };
-
-// const getGenreNamesFromIds = async (payload) => {
-//   try {
-//     // get the array of genreIds from the payload
-//     const { genres: genreIds } = payload;
-
-//     // get the genre names corresponding to the genre ids
-//     const genreNames = await Genre.find(
-//       {
-//         _id: { $in: genreIds },
-//       },
-//       { _id: 0, description: 0, __v: 0 },
-//     )
-//       .lean()
-//       .distinct('name');
-
-//     // return the genre names
-//     return genreNames;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
 module.exports = {
   getGenres,

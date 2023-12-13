@@ -11,6 +11,7 @@ const {
   ADMIN_PASSWORD: adminPassword,
 } = process.env;
 
+// add admin script for initial data seeding
 const addAdmin = async () => {
   try {
     // connect to the database

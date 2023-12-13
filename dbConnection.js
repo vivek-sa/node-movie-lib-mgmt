@@ -12,6 +12,7 @@ const {
   DB_DATABASE,
 } = process.env;
 
+// function that connects the mongo db server
 const connectToMongoDb = async () => {
   try {
     // creating the connection url

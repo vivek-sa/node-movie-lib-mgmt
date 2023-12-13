@@ -31,6 +31,7 @@ app.use(cookieParser());
 // registering all the routes in routes folder to the express app
 routes.registerRoutes(app);
 
+// start server function
 const startServer = async function () {
   try {
     // connecting to the mongo db database

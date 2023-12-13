@@ -8,6 +8,7 @@ const generateRandomToken = () => {
   );
 };
 
+// function that sign an access token for given id and returns token
 const signAccessToken = async (id) => {
   try {
     // generate the random token and store it in access token variable
@@ -30,6 +31,7 @@ const signAccessToken = async (id) => {
   }
 };
 
+// function that sign a refresh token for given id and returns token
 const signRefreshToken = async (id) => {
   try {
     // generate the random token and store it in refresh token variable

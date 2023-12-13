@@ -56,6 +56,7 @@ const genresData = [
   },
 ];
 
+// add genres script for initial data seeding
 const addGenres = async () => {
   try {
     // connect to the database

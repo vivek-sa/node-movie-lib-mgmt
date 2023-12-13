@@ -1,3 +1,4 @@
+// get genres serializer function
 const getGenres = async (req, res, next) => {
   // get the list of genres from response data
   let { genres } = res.data;

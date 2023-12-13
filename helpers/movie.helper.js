@@ -28,6 +28,7 @@ const s3Client = new S3Client({
   },
 });
 
+// function to process the video and give the path of 720p video, 1080p video and thumbnail
 const processVideo = async (fileBuffer, fileName) => {
   //   - fileBuffer: Buffer containing the video file data.
   //   - fileName: The name of the video file.
@@ -65,6 +66,7 @@ const processVideo = async (fileBuffer, fileName) => {
   }
 };
 
+// function to transcode video according to the provided size
 const transcodeVideo = (inputPath, outputPath, size) => {
   //   - inputPath: The file path of the input video.
   //   - outputPath: The file path where the transcoded video will be saved.
@@ -83,6 +85,7 @@ const transcodeVideo = (inputPath, outputPath, size) => {
   });
 };
 
+// function that generates thumbnail of a video
 const generateThumbnail = (inputPath, outputPath) => {
   return new Promise((resolve, reject) => {
     ffmpeg(inputPath)
@@ -151,7 +154,7 @@ const processMovieAndGetS3Links = async (fileBuffer, fileName, movieTitle) => {
   };
 };
 
-// delete movie from s3 bucket - helper function
+// function to delete movie from s3 bucket
 const deleteMovieFromS3 = async (s3MovieLink) => {
   // get the name of the folder using regular expression - (/bucket_key/folder_name)
   const folderNameRegEx = new RegExp(`\/${AWS_S3_BUCKET_KEY}\/([^\/]+)`);
