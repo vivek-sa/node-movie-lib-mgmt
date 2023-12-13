@@ -7,7 +7,7 @@ const {
   processMovieAndGetS3Links,
   deleteMovieFromS3,
 } = require('../helpers/movie.helper');
-const { getGenreNamesFromIds } = require('./genre.service');
+// const { getGenreNamesFromIds } = require('./genre.service');
 const { getUserIdsForPreferredGenres } = require('./userPreference.service');
 
 // generate array from comma separated value (for filtering)
@@ -124,11 +124,11 @@ const uploadMovie = async (payload) => {
     // save movie in the database
     const savedMovie = await movie.save();
 
-    // get genre names from genre ids of the movie
-    const genreNames = await getGenreNamesFromIds({ genres });
+    // // get genre names from genre ids of the movie
+    // const genreNames = await getGenreNamesFromIds({ genres });
 
     // get user ids of the users having genre of the movie as their genre preference
-    const userIds = await getUserIdsForPreferredGenres({ genreNames });
+    const userIds = await getUserIdsForPreferredGenres({ genres });
 
     // if user preference exists for the genre,
     // send user ids and movie id to the kafka suggest movie consumer

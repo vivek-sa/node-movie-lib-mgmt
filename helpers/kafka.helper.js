@@ -74,10 +74,10 @@ const userPreferenceConsumer = async () => {
 
       // extracting userId and genre from the data
       const userId = data.userId;
-      const genre = data.genre;
+      const genreId = data.genreId;
 
       // save the user preference to the database
-      await addUserPreference({ userId, genre });
+      await addUserPreference({ userId, genreId });
 
       console.log('User preference saved');
     },

@@ -18,26 +18,29 @@ const getGenres = async (payload) => {
   }
 };
 
-const getGenreNamesFromIds = async (payload) => {
-  try {
-    // get the array of genreIds from the payload
-    const { genres: genreIds } = payload;
+// const getGenreNamesFromIds = async (payload) => {
+//   try {
+//     // get the array of genreIds from the payload
+//     const { genres: genreIds } = payload;
 
-    // get the genre names corresponding to the genre ids
-    const genreNames = await Genre.find({
-      _id: { $in: genreIds },
-    })
-      .lean()
-      .distinct('name');
+//     // get the genre names corresponding to the genre ids
+//     const genreNames = await Genre.find(
+//       {
+//         _id: { $in: genreIds },
+//       },
+//       { _id: 0, description: 0, __v: 0 },
+//     )
+//       .lean()
+//       .distinct('name');
 
-    // return the genre names
-    return genreNames;
-  } catch (error) {
-    throw error;
-  }
-};
+//     // return the genre names
+//     return genreNames;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
 
 module.exports = {
   getGenres,
-  getGenreNamesFromIds,
+  // getGenreNamesFromIds,
 };
