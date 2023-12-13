@@ -7,7 +7,7 @@ const addUserPreference = async (payload) => {
     // creating the user preference for given userId
     const userPreference = new UserPreference({
       userId: userId,
-      genre: genreId,
+      genreId: genreId,
     });
 
     // storing the user preference in the mongo db collection

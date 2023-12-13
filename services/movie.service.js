@@ -88,10 +88,6 @@ const uploadMovie = async (payload) => {
       fileName,
     } = payload;
 
-    // replace spaces with underscore for movie title and file name
-    title = title.replaceAll(' ', '_');
-    fileName = fileName.replaceAll(' ', '_');
-
     // check if the title already exists
     const existingMovie = await Movie.findOne({ title: title });
 
