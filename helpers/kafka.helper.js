@@ -94,21 +94,24 @@ const userPreferenceConsumer = async () => {
 
 // Function for producing movie suggestions to Kafka
 const suggestMovieProducer = async (userIds, movieId) => {
-  // sending movie suggestion message to the 'suggest-movie' topic
-  await producer.send({
-    topic: kafkaTopicSuggestMovie,
-    messages: [
-      {
-        partition: 0,
-        key: 'movie-suggestion',
-        // send the list of user ids along with the movie id to the consumer
-        value: JSON.stringify({
-          userIds: userIds,
-          movieId: movieId,
-        }),
-      },
-    ],
-  });
+  // looping through all user ids and producing message for each user id
+  for (const userId of userIds) {
+    // sending movie suggestion message to the 'suggest-movie' topic
+    await producer.send({
+      topic: kafkaTopicSuggestMovie,
+      messages: [
+        {
+          partition: 0,
+          key: 'movie-suggestion',
+          // send the list of user ids along with the movie id to the consumer
+          value: JSON.stringify({
+            userId: userId,
+            movieId: movieId,
+          }),
+        },
+      ],
+    });
+  }
 };
 
 // Exporting functions for external use
