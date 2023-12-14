@@ -1,10 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const cookieParser = require('cookie-parser');
+
 const routes = require('./routes');
 const { connectToMongoDb } = require('./dbConnection');
+const morgan = require('morgan');
 const redisHelper = require('./helpers/redis.helper');
-
 const { adminSetup } = require('./helpers/kafka/client.kafka.helper');
 const {
   userPreferenceConsumer,
@@ -27,6 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // for cookie parsing
 app.use(cookieParser());
+
+// logging middleware (morgan)
+app.use(morgan('dev'));
 
 // registering all the routes in routes folder to the express app
 routes.registerRoutes(app);
