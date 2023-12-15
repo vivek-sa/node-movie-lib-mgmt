@@ -12,16 +12,16 @@ services:
       - redis
     environment:
       - SERVER_PORT=8000
-      - AWS_ACCESS_KEY_ID=AKIAUYHZHSPZ3O6RE2XC
-      - AWS_SECRET_ACCESS_KEY=Kv5yZ0P+nKowLz3+lUccT7ZCZJOeQ4XaPUHeCtjF
+      - AWS_ACCESS_KEY_ID=<your-access-key>
+      - AWS_SECRET_ACCESS_KEY=<your-secret-key>
       - AWS_REGION=ap-south-1
-      - AWS_S3_BUCKET_NAME=myflix-node-bucket
-      - AWS_S3_BUCKET_KEY=movies
+      - AWS_S3_BUCKET_NAME=<your-bucket-name>
+      - AWS_S3_BUCKET_KEY=<your-bucket-key>
       - DB_BASE_URL=mongodb://
       - DB_HOST=mongo
       - DB_PORT=27017
-      - DB_USERNAME=mongo
-      - DB_PASSWORD=Abcd_1234
+      - DB_USERNAME=<mongo-username>
+      - DB_PASSWORD=<mongo-password>
       - DB_AUTH_SOURCE=admin
       - DB_DATABASE=myflix_movies_db
       - REDIS_URL=redis://redis:6379
@@ -39,8 +39,8 @@ services:
     container_name: mongo
     image: mongo
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=mongo
-      - MONGO_INITDB_ROOT_PASSWORD=Abcd_1234
+      - MONGO_INITDB_ROOT_USERNAME=<mongo-user>
+      - MONGO_INITDB_ROOT_PASSWORD=<mongo-password>
       - MONGO_INITDB_DATABASE=myflix_movies_db
     ports:
       - 27017:27017
